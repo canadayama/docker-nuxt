@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  # nginx:
+  #   image: nginx:1.25-alpine
+  #   container_name: nuxt-nginx
+  #   restart: unless-stopped
+  #   working_dir: /var/www/html
+  #   ports:
+  #     - 8080:80
+  #     - 443:443
+  #   volumes:
+  #     - ./src:/var/www/html/app
+  #     - ./scripts/ngin/nginx.conf:/etc/nginx/nginx.conf
+  #   networks:
+  #     - default
+
+  app:
+    container_name: nuxt-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "npm run dev"
+    stdin_open: true
+    tty: true
+    ports:
+      - 3000:3000
+      - 24678:24678 # For Vite Hot Module Replacement
+    volumes:
+      - ./src:/app
+      - node_modules:/app/node_modules
+    networks:
+      - default
+
+volumes:
+  node_modules:
