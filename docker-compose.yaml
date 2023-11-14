@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # nginx:
   #   image: nginx:1.25-alpine
-  #   container_name: nuxt-nginx
+  #   container_name: docker-nuxt-nginx
   #   restart: unless-stopped
   #   working_dir: /var/www/html
   #   ports:
@@ -16,21 +16,29 @@ services:
   #     - default
 
   app:
-    container_name: nuxt-app
+    container_name: docker-nuxt-app
     build:
       context: .
       dockerfile: Dockerfile
+      #args:
+        ## Use user id & group id in .env
+        #USER_ID: ${USER_ID:-0}
+        #GROUP_ID: ${GROUP_ID:-0}
+    #user: ${USER_ID}:${GROUP_ID}
     command: sh -c "npm run dev"
     stdin_open: true
     tty: true
+    volumes:
+      - ./src:/app
+      # Set the logins and groups identical to host environment
+      #- /etc/group:/etc/group:ro
+      #- /etc/passwd:/etc/passwd:ro
+      #- /etc/shadow:/etc/shadow:ro
     ports:
       - 3000:3000
       - 24678:24678 # For Vite Hot Module Replacement
-    volumes:
-      - ./src:/app
-      - node_modules:/app/node_modules
     networks:
-      - default
+      - network
 
-volumes:
-  node_modules:
+networks:
+  network:
