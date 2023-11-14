@@ -30,6 +30,7 @@ services:
     tty: true
     volumes:
       - ./src:/app
+      - node_modules:/app/node_modules
       # Set the logins and groups identical to host environment
       #- /etc/group:/etc/group:ro
       #- /etc/passwd:/etc/passwd:ro
@@ -39,6 +40,9 @@ services:
       - 24678:24678 # For Vite Hot Module Replacement
     networks:
       - network
+
+volumes:
+  node_modules:
 
 networks:
   network:

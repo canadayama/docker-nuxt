@@ -8,6 +8,8 @@ ENV PORT = 3000
 
 WORKDIR /app
 
+RUN npm install -g npm@latest
+
 COPY ./src/package.json .
 RUN npm install
 
